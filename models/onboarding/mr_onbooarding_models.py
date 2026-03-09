@@ -29,6 +29,8 @@ class MedicalRepresentative(Base):
 	hra_rupees = Column(Float, nullable=True)
 	phone_allowances_rupees = Column(Float, nullable=True)
 	children_allowances_rupees = Column(Float, nullable=True)
+	special_allowances_rupees = Column(Float, nullable=True)
+	medical_allowances_rupees = Column(Float, nullable=True)
 	esic_rupees = Column(Float, nullable=True)
 	total_monthly_compensation_rupees = Column(Float, nullable=True)
 	active = Column(Boolean, nullable=False, default=True, server_default="true")

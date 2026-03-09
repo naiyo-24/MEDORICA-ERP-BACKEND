@@ -37,6 +37,8 @@ class MRResponseSchema(BaseModel):
 	hra_rupees: Optional[float] = None
 	phone_allowances_rupees: Optional[float] = None
 	children_allowances_rupees: Optional[float] = None
+	special_allowances_rupees: Optional[float] = None
+	medical_allowances_rupees: Optional[float] = None
 	esic_rupees: Optional[float] = None
 	total_monthly_compensation_rupees: Optional[float] = None
 	active: bool
@@ -84,6 +86,8 @@ def create_mr(
 	hra_rupees: Optional[float] = Form(None),
 	phone_allowances_rupees: Optional[float] = Form(None),
 	children_allowances_rupees: Optional[float] = Form(None),
+	special_allowances_rupees: Optional[float] = Form(None),
+	medical_allowances_rupees: Optional[float] = Form(None),
 	esic_rupees: Optional[float] = Form(None),
 	total_monthly_compensation_rupees: Optional[float] = Form(None),
 	active: bool = Form(True),
@@ -120,6 +124,8 @@ def create_mr(
 		hra_rupees=hra_rupees,
 		phone_allowances_rupees=phone_allowances_rupees,
 		children_allowances_rupees=children_allowances_rupees,
+		special_allowances_rupees=special_allowances_rupees,
+		medical_allowances_rupees=medical_allowances_rupees,
 		esic_rupees=esic_rupees,
 		total_monthly_compensation_rupees=total_monthly_compensation_rupees,
 		active=active,
@@ -159,6 +165,8 @@ def update_mr_by_id(
 	hra_rupees: Optional[float] = Form(None),
 	phone_allowances_rupees: Optional[float] = Form(None),
 	children_allowances_rupees: Optional[float] = Form(None),
+	special_allowances_rupees: Optional[float] = Form(None),
+	medical_allowances_rupees: Optional[float] = Form(None),
 	esic_rupees: Optional[float] = Form(None),
 	total_monthly_compensation_rupees: Optional[float] = Form(None),
 	active: Optional[bool] = Form(None),
@@ -222,6 +230,10 @@ def update_mr_by_id(
 		record.phone_allowances_rupees = phone_allowances_rupees
 	if children_allowances_rupees is not None:
 		record.children_allowances_rupees = children_allowances_rupees
+	if special_allowances_rupees is not None:
+		record.special_allowances_rupees = special_allowances_rupees
+	if medical_allowances_rupees is not None:
+		record.medical_allowances_rupees = medical_allowances_rupees
 	if esic_rupees is not None:
 		record.esic_rupees = esic_rupees
 	if total_monthly_compensation_rupees is not None:
