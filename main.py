@@ -8,6 +8,7 @@ from fastapi.staticfiles import StaticFiles
 
 from db import init_db
 from routes.about_us.about_us_routes import router as about_us_router
+from routes.onboarding.asm_onboarding_routes import router as asm_onboarding_router
 from routes.onboarding.mr_onboarding_routes import router as mr_onboarding_router
 
 load_dotenv()
@@ -48,6 +49,7 @@ def healthcheck():
 	return {"status": "ok", "message": "Backend is running"}
 
 
+app.include_router(asm_onboarding_router)
 app.include_router(about_us_router)
 app.include_router(mr_onboarding_router)
 

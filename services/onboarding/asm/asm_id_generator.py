@@ -1,0 +1,17 @@
+import re
+
+
+def _extract_10_digit_phone(phone_no: str) -> str:
+	if not phone_no:
+		raise ValueError("Phone number is required")
+
+	digits = re.sub(r"\D", "", phone_no)
+	if len(digits) != 10:
+		raise ValueError("Phone number must contain exactly 10 digits")
+
+	return digits
+
+
+# Generate ASM ID in the format: ASM + 10 digit phone number.
+def generate_asm_id(phone_no: str) -> str:
+	return f"ASM{_extract_10_digit_phone(phone_no)}"
