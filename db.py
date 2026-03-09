@@ -34,7 +34,7 @@ def get_db():
 # Create all registered database tables during application startup.
 def init_db():
 	from models.about_us.about_us_models import AboutUs
-	from models.ads.ads_models import Advertisement
+	from models.onboarding.mr_onbooarding_models import MedicalRepresentative
 
 	Base.metadata.create_all(bind=engine)
 

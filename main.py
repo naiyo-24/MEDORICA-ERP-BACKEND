@@ -8,7 +8,7 @@ from fastapi.staticfiles import StaticFiles
 
 from db import init_db
 from routes.about_us.about_us_routes import router as about_us_router
-from routes.ads.ads_routes import router as ads_router
+from routes.onboarding.mr_onboarding_routes import router as mr_onboarding_router
 
 load_dotenv()
 
@@ -49,7 +49,7 @@ def healthcheck():
 
 
 app.include_router(about_us_router)
-app.include_router(ads_router)
+app.include_router(mr_onboarding_router)
 
 
 if __name__ == "__main__":
