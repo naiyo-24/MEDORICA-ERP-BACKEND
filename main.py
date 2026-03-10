@@ -12,6 +12,7 @@ from routes.distributor.distributor_routes import router as distributor_router
 from routes.gift.gift_inventory_routes import router as gift_inventory_router
 from routes.onboarding.asm_onboarding_routes import router as asm_onboarding_router
 from routes.onboarding.mr_onboarding_routes import router as mr_onboarding_router
+from routes.team.team_routes import router as team_router
 from routes.visual_ads.visual_ads_routes import router as visual_ads_router
 
 load_dotenv()
@@ -57,6 +58,7 @@ app.include_router(about_us_router)
 app.include_router(distributor_router)
 app.include_router(gift_inventory_router)
 app.include_router(mr_onboarding_router)
+app.include_router(team_router)
 app.include_router(visual_ads_router)
 
 

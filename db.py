@@ -38,6 +38,7 @@ def init_db():
 	from models.gift.gift_inventory_models import GiftInventory
 	from models.onboarding.asm_onboarding_models import AreaSalesManager
 	from models.onboarding.mr_onbooarding_models import MedicalRepresentative
+	from models.team.team_models import Team
 	from models.visual_ads.visual_ads_models import VisualAd
 
 	Base.metadata.create_all(bind=engine)
