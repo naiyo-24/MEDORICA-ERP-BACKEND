@@ -35,6 +35,7 @@ def get_db():
 def init_db():
 	from models.about_us.about_us_models import AboutUs
 	from models.distributor.distributor_models import Distributor
+	from models.gift.gift_inventory_models import GiftInventory
 	from models.onboarding.asm_onboarding_models import AreaSalesManager
 	from models.onboarding.mr_onbooarding_models import MedicalRepresentative
 	from models.visual_ads.visual_ads_models import VisualAd
