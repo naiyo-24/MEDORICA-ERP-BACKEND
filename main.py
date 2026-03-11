@@ -8,6 +8,7 @@ from fastapi.staticfiles import StaticFiles
 
 from db import init_db
 from routes.about_us.about_us_routes import router as about_us_router
+from routes.attendance.asm_attendance_routes import router as asm_attendance_router
 from routes.distributor.distributor_routes import router as distributor_router
 from routes.gift.gift_inventory_routes import router as gift_inventory_router
 from routes.onboarding.asm_onboarding_routes import router as asm_onboarding_router
@@ -54,6 +55,7 @@ def healthcheck():
 
 
 app.include_router(asm_onboarding_router)
+app.include_router(asm_attendance_router)
 app.include_router(about_us_router)
 app.include_router(distributor_router)
 app.include_router(gift_inventory_router)
