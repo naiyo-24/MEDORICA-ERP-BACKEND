@@ -39,6 +39,12 @@ class TeamMemberSchema(BaseModel):
 	mr_id: str
 	full_name: str
 	phone_no: str
+	alt_phone_no: Optional[str] = None
+	email: Optional[str] = None
+	address: Optional[str] = None
+	headquarter_assigned: Optional[str] = None
+	territories_of_work: Optional[Any] = None
+	profile_photo: Optional[str] = None
 
 
 class TeamGetResponseSchema(TeamResponseSchema):
@@ -82,6 +88,12 @@ def _build_team_get_response(record: Team, db: Session) -> dict:
 				"mr_id": member.mr_id,
 				"full_name": member.full_name,
 				"phone_no": member.phone_no,
+				"alt_phone_no": member.alt_phone_no,
+				"email": member.email,
+				"address": member.address,
+				"headquarter_assigned": member.headquarter_assigned,
+				"territories_of_work": member.territories_of_work,
+				"profile_photo": member.profile_photo,
 			}
 			for member in members
 		]
@@ -143,6 +155,14 @@ def get_team_by_team_id(team_id: int, db: Session = Depends(get_db)):
 	if not record:
 		raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Team not found")
 	return _build_team_get_response(record, db)
+
+
+@router.get("/get-by-asm/{asm_id}", response_model=list[TeamGetResponseSchema])
+def get_teams_by_asm_id(asm_id: str, db: Session = Depends(get_db)):
+	records = db.query(Team).filter(Team.team_leader_asm_id == asm_id).all()
+	if not records:
+		raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No team found for the provided ASM ID")
+	return [_build_team_get_response(record, db) for record in records]
 
 
 @router.put("/update-by/{team_id}", response_model=TeamResponseSchema)
