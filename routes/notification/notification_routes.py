@@ -56,3 +56,15 @@ def get_notification_by_id(notification_id: int, db: Session = Depends(get_db)):
 @router.get("/get-all", response_model=list[NotificationResponseSchema])
 def get_all_notifications(db: Session = Depends(get_db)):
 	return db.query(Notification).all()
+
+
+# Fetch all notifications for ASM audience.
+@router.get("/get-all/asm", response_model=list[NotificationResponseSchema])
+def get_asm_notifications(db: Session = Depends(get_db)):
+	return db.query(Notification).filter(Notification.audience == "asm").all()
+
+
+# Fetch all notifications for MR audience.
+@router.get("/get-all/mr", response_model=list[NotificationResponseSchema])
+def get_mr_notifications(db: Session = Depends(get_db)):
+	return db.query(Notification).filter(Notification.audience == "mr").all()
