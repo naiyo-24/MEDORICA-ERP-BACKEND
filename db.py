@@ -40,6 +40,7 @@ def init_db():
 	from models.doctor_network.asm_doctor_network_models import ASMDoctorNetwork
 	from models.distributor.distributor_models import Distributor
 	from models.gift.gift_inventory_models import GiftInventory
+	from models.notification.notification_models import Notification
 	from models.onboarding.asm_onboarding_models import AreaSalesManager
 	from models.onboarding.mr_onbooarding_models import MedicalRepresentative
 	from models.team.team_models import Team
