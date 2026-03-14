@@ -41,6 +41,7 @@ def init_db():
 	from models.distributor.distributor_models import Distributor
 	from models.gift.gift_inventory_models import GiftInventory
 	from models.monthly_plan.monthly_plan_models import MonthlyPlan
+	from models.monthly_target.asm_monthly_target_models import ASMMonthlyTarget
 	from models.order.asm_order_models import ASMOrder
 	from models.salary_slip.asm_salary_slip_models import ASMSalarySlip
 	from models.notification.notification_models import Notification

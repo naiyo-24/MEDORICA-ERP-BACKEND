@@ -1,5 +1,5 @@
 import json
-from datetime import datetime
+from datetime import date, datetime
 from typing import Any, Optional
 
 from fastapi import APIRouter, Depends, Form, HTTPException, status
@@ -10,6 +10,7 @@ from db import get_db
 from models.chemist_shop.asm_chemist_shop_network_models import ASMChemistShopNetwork
 from models.distributor.distributor_models import Distributor
 from models.doctor_network.asm_doctor_network_models import ASMDoctorNetwork
+from models.monthly_target.asm_monthly_target_models import ASMMonthlyTarget
 from models.onboarding.asm_onboarding_models import AreaSalesManager
 from models.order.asm_order_models import ASMOrder
 from services.order.asm_order_id_generator import generate_asm_order_id
@@ -113,6 +114,50 @@ def _validate_optional_links(
 			raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Doctor not found for this ASM")
 
 
+def _deduct_monthly_target_on_approval(
+	db: Session,
+	asm_record: AreaSalesManager,
+	order_amount_rupees: float,
+):
+	today = date.today()
+	month = today.month
+	year = today.year
+
+	monthly_target_record = (
+		db.query(ASMMonthlyTarget)
+		.filter(
+			ASMMonthlyTarget.asm_id == asm_record.asm_id,
+			ASMMonthlyTarget.month == month,
+			ASMMonthlyTarget.year == year,
+		)
+		.with_for_update()
+		.first()
+	)
+
+	if monthly_target_record is None:
+		opening_target = asm_record.monthly_target_rupees or 0.0
+		monthly_target_record = ASMMonthlyTarget(
+			asm_id=asm_record.asm_id,
+			month=month,
+			year=year,
+			opening_target_rupees=opening_target,
+			deducted_target_rupees=0.0,
+			remaining_target_rupees=opening_target,
+		)
+		db.add(monthly_target_record)
+		db.flush()
+
+	remaining_before = monthly_target_record.remaining_target_rupees or 0.0
+	if remaining_before < order_amount_rupees:
+		raise HTTPException(
+			status_code=status.HTTP_400_BAD_REQUEST,
+			detail="Insufficient monthly target remaining for approval",
+		)
+
+	monthly_target_record.deducted_target_rupees = (monthly_target_record.deducted_target_rupees or 0.0) + order_amount_rupees
+	monthly_target_record.remaining_target_rupees = remaining_before - order_amount_rupees
+
+
 # Create a new order for an ASM by ASM ID.
 @router.post("/post-by/{asm_id}", response_model=ASMOrderResponseSchema, status_code=status.HTTP_201_CREATED)
 def create_asm_order(
@@ -197,6 +242,10 @@ def update_order_by_order_id(
 	if not record:
 		raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Order not found")
 
+	asm_record = db.query(AreaSalesManager).filter(AreaSalesManager.asm_id == record.asm_id).first()
+	if not asm_record:
+		raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="ASM not found")
+
 	# On update, None means "leave unchanged" for optional link fields.
 	next_distributor_id = distributor_id if distributor_id is not None else record.distributor_id
 	next_chemist_shop_id = chemist_shop_id if chemist_shop_id is not None else record.chemist_shop_id
@@ -212,9 +261,25 @@ def update_order_by_order_id(
 	if products_with_price is not None:
 		record.products_with_price = _parse_products_with_price_json(products_with_price)
 	if total_amount_rupees is not None:
+		if record.status == "approved" and total_amount_rupees != record.total_amount_rupees:
+			raise HTTPException(
+				status_code=status.HTTP_400_BAD_REQUEST,
+				detail="Cannot change total amount after order is approved",
+			)
 		record.total_amount_rupees = total_amount_rupees
 	if status_value is not None:
-		record.status = _normalize_order_status(status_value)
+		next_status = _normalize_order_status(status_value)
+		if record.status == "approved" and next_status != "approved":
+			raise HTTPException(
+				status_code=status.HTTP_400_BAD_REQUEST,
+				detail="Cannot change status after order is approved",
+			)
+
+		next_total_amount = total_amount_rupees if total_amount_rupees is not None else record.total_amount_rupees
+		if record.status != "approved" and next_status == "approved":
+			_deduct_monthly_target_on_approval(db, asm_record, next_total_amount)
+
+		record.status = next_status
 
 	db.commit()
 	db.refresh(record)
