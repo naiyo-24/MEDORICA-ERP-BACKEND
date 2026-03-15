@@ -38,7 +38,9 @@ def init_db():
 	from models.attendance.asm_attendance_models import ASMAttendance
 	from models.attendance.mr_attendance_models import MRAttendance
 	from models.chemist_shop.asm_chemist_shop_network_models import ASMChemistShopNetwork
+	from models.chemist_shop.mr_chemist_shop_network_models import MRChemistShopNetwork
 	from models.doctor_network.asm_doctor_network_models import ASMDoctorNetwork
+	from models.doctor_network.mr_doctor_network_models import MRDoctorNetwork
 	from models.distributor.distributor_models import Distributor
 	from models.gift.gift_inventory_models import GiftInventory
 	from models.monthly_plan.monthly_plan_models import MonthlyPlan

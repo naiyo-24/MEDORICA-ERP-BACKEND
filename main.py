@@ -12,7 +12,9 @@ from routes.appointment.asm.asm_appointment_routes import router as asm_appointm
 from routes.attendance.asm_attendance_routes import router as asm_attendance_router
 from routes.attendance.mr_attendance_routes import router as mr_attendance_router
 from routes.chemist_shop.asm_chemist_shop_network_routes import router as asm_chemist_shop_network_router
+from routes.chemist_shop.mr_chemist_shop_network_routes import router as mr_chemist_shop_network_router
 from routes.doctor_network.asm_doctor_network_routes import router as asm_doctor_network_router
+from routes.doctor_network.mr_doctor_network_routes import router as mr_doctor_network_router
 from routes.distributor.distributor_routes import router as distributor_router
 from routes.gift.gift_inventory_routes import router as gift_inventory_router
 from routes.monthly_plan.monthly_plan_routes import router as monthly_plan_router
@@ -68,7 +70,9 @@ app.include_router(asm_appointment_router)
 app.include_router(asm_attendance_router)
 app.include_router(mr_attendance_router)
 app.include_router(asm_chemist_shop_network_router)
+app.include_router(mr_chemist_shop_network_router)
 app.include_router(asm_doctor_network_router)
+app.include_router(mr_doctor_network_router)
 app.include_router(about_us_router)
 app.include_router(distributor_router)
 app.include_router(gift_inventory_router)
