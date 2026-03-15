@@ -20,8 +20,10 @@ from routes.distributor.distributor_routes import router as distributor_router
 from routes.gift.gift_inventory_routes import router as gift_inventory_router
 from routes.monthly_plan.monthly_plan_routes import router as monthly_plan_router
 from routes.monthly_target.asm_monthly_target_routes import router as asm_monthly_target_router
+from routes.monthly_target.mr_monhtly_target_routes import router as mr_monthly_target_router
 from routes.notification.notification_routes import router as notification_router
 from routes.order.asm_order_routes import router as asm_order_router
+from routes.order.mr_order_routes import router as mr_order_router
 from routes.salary_slip.asm_salary_slip_routes import router as asm_salary_slip_router
 from routes.onboarding.asm_onboarding_routes import router as asm_onboarding_router
 from routes.onboarding.mr_onboarding_routes import router as mr_onboarding_router
@@ -79,7 +81,9 @@ app.include_router(distributor_router)
 app.include_router(gift_inventory_router)
 app.include_router(monthly_plan_router)
 app.include_router(asm_monthly_target_router)
+app.include_router(mr_monthly_target_router)
 app.include_router(asm_order_router)
+app.include_router(mr_order_router)
 app.include_router(asm_salary_slip_router)
 app.include_router(notification_router)
 app.include_router(mr_onboarding_router)
