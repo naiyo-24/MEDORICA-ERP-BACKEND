@@ -13,15 +13,6 @@ from models.team.team_models import Team
 
 router = APIRouter(prefix="/monthly-plan", tags=["Monthly Plan"])
 
-# Update and Delete schemas
-class MonthlyPlanUpdateSchema(BaseModel):
-	status: Optional[Literal["draft", "published", "cancelled"]] = None
-	member_day_plans: Optional[list[MemberDayPlanSchema]] = None
-
-class DeleteResponseSchema(BaseModel):
-	detail: str
-
-
 class ActivitySchema(BaseModel):
 	slot: str
 	type: str
@@ -33,6 +24,16 @@ class MemberDayPlanSchema(BaseModel):
 	mr_id: str
 	mr_name: Optional[str] = None
 	activities: list[ActivitySchema]
+
+
+# Update and Delete schemas
+class MonthlyPlanUpdateSchema(BaseModel):
+	status: Optional[Literal["draft", "published", "cancelled"]] = None
+	member_day_plans: Optional[list[MemberDayPlanSchema]] = None
+
+
+class DeleteResponseSchema(BaseModel):
+	detail: str
 
 
 class MonthlyPlanCreateSchema(BaseModel):
