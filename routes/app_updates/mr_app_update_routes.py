@@ -6,8 +6,7 @@ from fastapi.responses import FileResponse, JSONResponse
 
 router = APIRouter(prefix="/mr-app-updates", tags=["MR App Updates"])
 
-APK_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "apk-builds", "mr-app")
-
+APK_DIR = os.path.join(os.getcwd(), "apk-builds", "mr-app")
 def get_apk_versions():
     files = []
     if os.path.isdir(APK_DIR):
